@@ -1,0 +1,36 @@
+#######################################
+# IDE Map for Nexgen Motor Shield
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+NexgenTimer KEYWORD1
+ElapsedMillis   KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+expiredHandler  KEYWORD2
+setInterval KEYWORD2
+setRepeats  KEYWORD2
+setTargetTime   KEYWORD2
+getTargetTime   KEYWORD2
+getRemainingTime    KEYWORD2
+getRemainingRepeats KEYWORD2
+isRunning   KEYWORD2
+stop    KEYWORD2
+start   KEYWORD2
+startFrom   KEYWORD2
+reset   KEYWORD2
+expired KEYWORD2
+run KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
+FORWARD LITERAL1
+BACKWARD    LITERAL1
