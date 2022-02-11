@@ -1,15 +1,14 @@
 /******************************************************************
-  @file    NexgenTimer.cpp
-  @brief   A non blocking Scheduler based on millis().
-  @author  David Such
+  @file       NexgenTimer.cpp
+  @brief      A non blocking Scheduler based on millis().
+  @author     David Such
+  @copyright  Please see the accompanying LICENSE.txt file.
 
   Code:        David Such
   Version:     1.0
   Date:        06/02/22
 
   1.0 Original Release          06/02/22
-
-  @license Please see the accompanying LICENSE.txt file for this project.
 
 ******************************************************************/
 
@@ -26,16 +25,13 @@ NexgenTimer::NexgenTimer(uint32_t interval, timerEventHandler handler) {
   cb_onExpired = handler;
 }
 
-
 bool NexgenTimer::isRunning() const {
   return (m_state == RUNNING);
 }
 
-
 void NexgenTimer::run() {
   expired();
 }
-
 
 bool NexgenTimer::expired() {
   // Only if we're running
@@ -74,7 +70,6 @@ bool NexgenTimer::expired() {
   }
 }
 
-
 void NexgenTimer::stop() {
   m_state = STOPPED;
   
@@ -85,12 +80,10 @@ void NexgenTimer::stop() {
   }
 }
 
-
 // Start the timer.
 void NexgenTimer::start() {
   startFrom(millis());
 }
-
 
 // Start from a specific time provided.
 void NexgenTimer::startFrom(uint32_t startTime) {
@@ -106,12 +99,10 @@ void NexgenTimer::startFrom(uint32_t startTime) {
   }
 }
 
-
 // Arbitrarily set the target time.
 void NexgenTimer::setTargetTime(uint32_t targetTime) {
   m_targetTime = targetTime;
 }
-
 
 // Reset the timer. Stop, and reset repeat count.
 void NexgenTimer::reset() {
@@ -120,26 +111,21 @@ void NexgenTimer::reset() {
   m_repeatCount = m_repeat;
 }
 
-
 void NexgenTimer::setInterval(uint32_t interval) {
   m_interval = interval;
 }
-
 
 void NexgenTimer::setRepeats(uint32_t repeatCount) {
   m_repeat = m_repeatCount = repeatCount;
 }
 
-
 void NexgenTimer::expiredHandler(timerEventHandler handler) {
   cb_onExpired = handler;
 }
 
-
 uint32_t NexgenTimer::getTargetTime() const {
   return m_targetTime;
 }
-
 
 uint32_t NexgenTimer::getRemainingTime() const {
   if (m_state == RUNNING) {
@@ -149,7 +135,6 @@ uint32_t NexgenTimer::getRemainingTime() const {
     return m_remainingTime;
   }
 }
-
 
 uint32_t NexgenTimer::getRemainingRepeats() const {
   if (m_state == EXPIRED && m_repeatCount == 1)

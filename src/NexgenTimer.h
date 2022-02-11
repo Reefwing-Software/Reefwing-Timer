@@ -1,15 +1,14 @@
 /******************************************************************
-  @file    NexgenTimer.h
-  @brief   A non blocking Scheduler based on millis().
-  @author  David Such
+  @file       NexgenTimer.h
+  @brief      A non blocking Scheduler based on millis().
+  @author     David Such
+  @copyright  Please see the accompanying LICENSE.txt file.
 
   Code:        David Such
   Version:     1.0
   Date:        06/02/22
 
   1.0 Original Release          06/02/22
-
-  @license Please see the accompanying LICENSE.txt file for this project.
 
   Credits - based on an amalgamation of the MillisTimer code by 
             Brett Hagman <bhagman@wiring.org.co> and elapsedMillis 
@@ -56,6 +55,20 @@ class NexgenTimer
     uint32_t m_repeat;
     uint32_t m_repeatCount;
     timerEventHandler cb_onExpired;
+};
+
+class Timeout
+{
+  private:
+    unsigned long ms;
+    unsigned long timeout;
+
+  public:
+    Timeout(void) { ms = millis(); }
+    Timeout(unsigned long val) { timeout = millis() + val; }
+
+    bool expired() { return (millis() >= timeout); }
+    bool notExpired() { return (millis() < timeout); }
 };
 
 class ElapsedMillis

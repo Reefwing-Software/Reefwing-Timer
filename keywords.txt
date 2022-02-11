@@ -8,6 +8,7 @@
 
 NexgenTimer KEYWORD1
 ElapsedMillis   KEYWORD1
+Timeout KEYWORD1
 
 #######################################
 # Methods and Functions (KEYWORD2)
@@ -26,6 +27,7 @@ start   KEYWORD2
 startFrom   KEYWORD2
 reset   KEYWORD2
 expired KEYWORD2
+notExpired  KEYWORD2
 run KEYWORD2
 
 #######################################
