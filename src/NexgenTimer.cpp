@@ -2,7 +2,7 @@
   @file       NexgenTimer.cpp
   @brief      A non blocking Scheduler based on millis().
   @author     David Such
-  @copyright  Please see the accompanying LICENSE.txt file.
+  @copyright  Please see the accompanying LICENSE file.
 
   Code:        David Such
   Version:     1.0
@@ -12,7 +12,7 @@
 
 ******************************************************************/
 
-#include "Arduino.h"
+#include <Arduino.h>
 #include "NexgenTimer.h"
 
 // Constructor

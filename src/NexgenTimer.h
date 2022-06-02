@@ -2,7 +2,7 @@
   @file       NexgenTimer.h
   @brief      A non blocking Scheduler based on millis().
   @author     David Such
-  @copyright  Please see the accompanying LICENSE.txt file.
+  @copyright  Please see the accompanying LICENSE file.
 
   Code:        David Such
   Version:     1.0
@@ -19,7 +19,7 @@
 #ifndef NexgenTimer_h
 #define NexgenTimer_h
 
-#include "Arduino.h"
+#include <Arduino.h>
 
 class NexgenTimer;
 typedef void (*timerEventHandler)(NexgenTimer&);
