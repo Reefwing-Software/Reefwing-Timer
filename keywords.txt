@@ -1,12 +1,12 @@
 #######################################
-# IDE Map for Nexgen Motor Shield
+# IDE Map for Reefwing Timer
 #######################################
 
 #######################################
 # Datatypes (KEYWORD1)
 #######################################
 
-NexgenTimer KEYWORD1
+ReefwingTimer KEYWORD1
 ElapsedMillis   KEYWORD1
 Timeout KEYWORD1
 
@@ -33,6 +33,3 @@ run KEYWORD2
 #######################################
 # Constants (LITERAL1)
 #######################################
-
-FORWARD LITERAL1
-BACKWARD    LITERAL1

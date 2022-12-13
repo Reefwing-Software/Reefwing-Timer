@@ -5,14 +5,15 @@
   @copyright  Please see the accompanying LICENSE.txt file.
 
   Code:        David Such
-  Version:     1.0
-  Date:        06/02/22
+  Version:     2.0
+  Date:        13/12/22
 
   1.0 Original Release          06/02/22
+  2.0 Rebranding                13/12/22
 
 ******************************************************************/
 
-#include <NexgenTimer.h>
+#include <ReefwingTimer.h>
 
 void setup() {
   Timeout timeout = Timeout(5000);

@@ -5,14 +5,15 @@
   @copyright  Please see the accompanying LICENSE.txt file.
 
   Code:        David Such
-  Version:     1.0
-  Date:        06/02/22
+  Version:     2.0
+  Date:        13/12/22
 
   1.0 Original Release          06/02/22
+  2.0 Rebranding                13/12/22
 
 ******************************************************************/
 
-#include <NexgenTimer.h>
+#include <ReefwingTimer.h>
 
 /******************************************************************
  *  Battery Voltage ADC DEFINES
@@ -47,7 +48,7 @@ float calculateVoltage(int pin) {
   return (adcValue / 1024.0) * SCALE;
 }
 
-void voltageCheck(NexgenTimer &nt) {
+void voltageCheck(ReefwingTimer &nt) {
   //  Called when the timer expires - toggle LED state at each read
   digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));
 
@@ -58,7 +59,7 @@ void voltageCheck(NexgenTimer &nt) {
   Serial.println(batteryVoltage);
 }
 
-NexgenTimer nexgenTimer = NexgenTimer(1000, voltageCheck);
+ReefwingTimer rTimer = ReefwingTimer(1000, voltageCheck);
 
 void setup() {
   //  Pin Configuration
@@ -69,11 +70,11 @@ void setup() {
   Serial.begin(115200);
 
   //  Timer Configuration
-  nexgenTimer.start();
+  rTimer.start();
 }
 
 void loop() {
   //  Put your main code here, to run repeatedly:
-  nexgenTimer.run();
+  rTimer.run();
   delay(10);
 }

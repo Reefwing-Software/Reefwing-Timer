@@ -1,14 +1,15 @@
 /******************************************************************
-  @file       NexgenTimer.h
+  @file       ReefwingTimer.h
   @brief      A non blocking Scheduler based on millis().
   @author     David Such
   @copyright  Please see the accompanying LICENSE file.
 
   Code:        David Such
-  Version:     1.0
-  Date:        06/02/22
+  Version:     2.0
+  Date:        13/12/22
 
   1.0 Original Release          06/02/22
+  2.0 Rebranding                13/12/22
 
   Credits - based on an amalgamation of the MillisTimer code by 
             Brett Hagman <bhagman@wiring.org.co> and elapsedMillis 
@@ -16,18 +17,18 @@
 
 ******************************************************************/
 
-#ifndef NexgenTimer_h
-#define NexgenTimer_h
+#ifndef ReefwingTimer_h
+#define ReefwingTimer_h
 
 #include <Arduino.h>
 
-class NexgenTimer;
-typedef void (*timerEventHandler)(NexgenTimer&);
+class ReefwingTimer;
+typedef void (*timerEventHandler)(ReefwingTimer&);
 
-class NexgenTimer
+class ReefwingTimer
 {
   public:
-    NexgenTimer(uint32_t interval = 0, timerEventHandler handler = NULL);
+    ReefwingTimer(uint32_t interval = 0, timerEventHandler handler = NULL);
 
     void expiredHandler(timerEventHandler handler);
     void setInterval(uint32_t interval);

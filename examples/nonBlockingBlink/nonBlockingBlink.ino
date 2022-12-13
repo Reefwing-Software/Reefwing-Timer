@@ -1,22 +1,23 @@
 /******************************************************************
   @file       nonBlockingBlink.ino
-  @brief      A non blocking LED blink example using NexgenTimer
+  @brief      A non blocking LED blink example using ReefwingTimer
   @author     David Such
   @copyright  Please see the accompanying LICENSE.txt file.
 
   Code:        David Such
-  Version:     1.0
-  Date:        06/02/22
+  Version:     2.0
+  Date:        13/12/22
 
   1.0 Original Release          06/02/22
+  2.0 Rebranding                13/12/22
 
 ******************************************************************/
 
-#include <NexgenTimer.h>
+#include <ReefwingTimer.h>
 
-NexgenTimer nexgenTimer = NexgenTimer();
+ReefwingTimer ReefwingTimer = rTimer();
 
-void timerHandler(NexgenTimer &nt) {
+void timerHandler(ReefwingTimer &nt) {
   //  Called when the timer expires - toggle LED state
   digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));
 }
@@ -27,14 +28,14 @@ void setup() {
 
   //  Configure Timer - it defaults to infinite repeat
   //  Interval (in ms) and Handler could alternatively be set in the constructor,
-  //  For example: NexgenTimer nexgenTimer = NexgenTimer(1000, timerHandler);
-  nexgenTimer.setInterval(1000);
-  nexgenTimer.expiredHandler(timerHandler);
-  nexgenTimer.start();
+  //  For example: ReefwingTimer ReefwingTimer = rTimer(1000, timerHandler);
+  rTimer.setInterval(1000);
+  rTimer.expiredHandler(timerHandler);
+  rTimer.start();
 }
 
 void loop() {
   //  Put your main code here, to run repeatedly:
-  nexgenTimer.run();
+  rTimer.run();
   delay(10);
 }

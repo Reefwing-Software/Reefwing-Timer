@@ -1,25 +1,25 @@
-# Nexgen Timer Library
+# Reefwing Timer Library
  A non blocking Scheduler based on millis().
 
 ## Background
-Both the Nexgen Rover and the Nexgen Drone use LiPo batteries to provide power. These are a good choice in terms of current delivery, size, weight and capacity. However, you don't want to over discharge them or you can impact battery life. 
+LiPo batteries are a good choice in terms of current delivery, size, weight and capacity. However, you don't want to over discharge them or you can impact battery life. 
 
 To help prevent this we developed a library which can be used to regularly check the battery voltage, allowing us to take action if it gets too low.
 
-We have rover shields which suit the Arduino UNO, Mega 2560, and the Nano 33 IoT. Our Magpie drone can use the Nano 33 BLE, Nano 33 IoT and the Portenta H7. Ideally we want a scheduling library which is suitable for all the Arduino boards.
+Ideally we want a scheduling library which is suitable for all the Arduino boards.
 
 Although this library was originally for scheduling battery readings, we found that it has much wider application. The examples folder of the library contains the following sketches:
-- ```nonBlockingBlink```: An implementation of the classic blink sketch using ```NexgenTimer```.
+- ```nonBlockingBlink```: An implementation of the classic blink sketch using ```ReefwingTimer```.
 - ```batteryCheck```: An example of a scheduled task, in this case checking the battery voltage every second.
 - ```serialTimeout```: Stops waiting for a serial connection after 5 seconds.
 - ```userTimeout```: Stops waiting for user input after a set period.
 - ```debounceTimer```: How to use ```ElapsedMillis``` as a switch debounce timer.
 - ```multipleTimers```: A simple multitasking example.
 
-The ```NexgenTimer``` is a wrapper library which uses the ```millis()``` function to instantiate a non blocking scheduler. Our library is an amalgamation of the [MillisTimer](https://github.com/bhagman/MillisTimer) and [ElapsedTimer](http://www.pjrc.com/teensy/) libraries with some application specific examples and an extra ```Timeout``` class. It only uses functions from the Arduino core API and hence should work on all Arduino boards.
+The ```ReefwingTimer``` is a wrapper library which uses the ```millis()``` function to instantiate a non blocking scheduler. Our library is an amalgamation of the [MillisTimer](https://github.com/bhagman/MillisTimer) and [ElapsedTimer](http://www.pjrc.com/teensy/) libraries with some application specific examples and an extra ```Timeout``` class. It only uses functions from the Arduino core API and hence should work on all Arduino boards.
 
 ## Battery Voltage Monitoring
-The 3S LiPo battery we are using has a nominal voltage of 11.1V and when fully charged, will put out 12.6V. You don't want to discharge the LiPo below 15% capacity (around 11V for the 3S battery or somewhere between 3.4V to 3.6V per cell), as it then quickly falls off the capacity cliff and you can damage the battery.
+The 3S LiPo battery has a nominal voltage of 11.1V and when fully charged, will put out 12.6V. You don't want to discharge the LiPo below 15% capacity (around 11V for the 3S battery or somewhere between 3.4V to 3.6V per cell), as it then quickly falls off the capacity cliff and you can damage the battery.
 
 To monitor the battery we will use a simple voltage divider and the ADC (Analog to Digital Converter) on the Arduino. We will look at the requirements for the UNO, but the principles are the same for the other boards, although you may need the voltage divider to reduce the measured voltage to 3V3 rather than 5V depending on the board.
 
@@ -64,14 +64,14 @@ batteryVoltage = (adcValue / 1024.0) * 5.0 * dividerRatio;
 R1 and R2 are the values of the resistors used in the voltage divider. It is important to cast the resistor values to float or the Arduino will do integer division and you will get the wrong value for the dividerRatio. We add 0.5 to the value read from the ADC (Analog to Digital Converter) because the hardware rounds down when it is measuring the voltage.
 
 ## Scheduling a Reading
-The loop{} frequency in an Arduino sketch will depend on the processor speed and code content. Typically though it will be executing thousands or even millions of times per second. With a flight controller, execution cycles are precious and you don't want to waste them on non-critical tasks. How often do we need to sample our battery voltage? Well it depends on the discharge rate (C). Here is the specification of a typical LiPo battery.
+The loop{} frequency in an Arduino sketch will depend on the processor speed and code content. Typically though it will be executing thousands or even millions of times per second. Execution cycles are precious and you don't want to waste them on non-critical tasks. How often do we need to sample our battery voltage? Well it depends on the discharge rate (C). Here is the specification of a typical LiPo battery.
 ```
 Minimum Capacity: 2200mAh
 Configuration: 3S1P / 11.1v / 3Cell
 Constant Discharge: 25C
 Peak Discharge (10sec): 35C
 ```
-There are two discharge ratings, one for safe continuous use and the other for sub 10 second bursts (e.g., when a drone is taking off or punching out). To convert the discharge rating to current, we multiply it by the capacity. From the specifications above the battery capacity is 2200 mAh = 2.2 Ah.
+There are two discharge ratings, one for safe continuous use and the other for sub 10 second bursts. To convert the discharge rating to current, we multiply it by the capacity. From the specifications above the battery capacity is 2200 mAh = 2.2 Ah.
 ```
 Discharge Current = C × Capacity
 ```
@@ -87,7 +87,7 @@ Of course you would destroy the battery if you tried to do this. The maximum saf
 ```
 Safe Discharge Time (s) = (1.87 × 3600) / (25 × 2.2) = 6732 / 55 = 122.4 s
 ```
-Most drones/rovers/etc. are not going to be designed to run at 100% of the battery discharge capacity and so the discharge time is likely to be significantly longer than even the maximum safe discharge time.
+Most systems are not going to be designed to run at 100% of the battery discharge capacity and so the discharge time is likely to be significantly longer than even the maximum safe discharge time.
 
 The discharge curve is fairly linear within the safe operating range of the battery. Even ignoring the effects of temperature our monitored voltage will fluctuate with use. For example, when you use full throttle, the motors will draw a lot of current and the battery voltage will decrease or "sag" temporarily, this could trigger a false low voltage alarm. When you decrease throttle, the voltage level will recover. Thus our battery monitoring needs to include some sort of hysteresis.
 
@@ -106,30 +106,30 @@ The [Arduino core](https://medium.com/r/?url=https%3A%2F%2Fwww.arduino.cc%2Frefe
 
 For this reason we have created a wrapper library which uses the millis() function to instantiate a non blocking scheduler. Our library is an amalgamation of the [MillisTimer](https://github.com/bhagman/MillisTimer) and [ElapsedTimer](http://www.pjrc.com/teensy/) libraries with some application specific examples and an extra ```Timeout``` class.
 
-## The NexgenTimer Library
+## The ReefwingTimer Library
 To use the library you need to include it in your sketch.
 ```c++
-#include <NexgenTimer.h>
+#include <ReefwingTimer.h>
 ```
-There are two approaches to instantiating a NexgenTimer object:
-- Use the constructor which includes the interval in milliseconds and the name of the expired timer handler function [e.g., ```NexgenTimer nexgenTimer = NexgenTimer(1000, timerHandler);```], or
-- Use an empty constructor and define those variables in setup{} [e.g., ```NexgenTimer nexgenTimer = NexgenTimer();```].
+There are two approaches to instantiating a ReefwingTimer object:
+- Use the constructor which includes the interval in milliseconds and the name of the expired timer handler function [e.g., ```ReefwingTimer timer = ReefwingTimer(1000, timerHandler);```], or
+- Use an empty constructor and define those variables in setup{} [e.g., ```ReefwingTimer timer = ReefwingTimer();```].
 
-If you use the first approach, the timerHandler function will need to be defined above the NexgenTimer. By default, the timer will repeat indefinitely, but you can use the setRepeats method to configure it for a certain number of repeats [e.g., ```nexgenTimer.setRepeats(10);```].
+If you use the first approach, the timerHandler function will need to be defined above the ReefwingTimer. By default, the timer will repeat indefinitely, but you can use the setRepeats method to configure it for a certain number of repeats [e.g., ```timer.setRepeats(10);```].
 The last thing that you should do in setup{} is to start the timer.
 ```c++
-nexgenTimer.start();
+timer.start();
 ```
 Then within the loop{}, you have to let the timer update by calling:
 ```c++
-nexgenTimer.run();
+timer.run();
 ```
 
 ## Examples
-The best way to see how to use the NexgenTimer library is with some examples. These are all contained within the library and can be accessed via the Arduino IDE once you have added the library with the library manager.
+The best way to see how to use the ReefwingTimer library is with some examples. These are all contained within the library and can be accessed via the Arduino IDE once you have added the library with the library manager.
 
 The examples folder of the library contains the following sketches:
-- nonBlockingBlink: An implementation of the classic blink sketch using NexgenTimer.
+- nonBlockingBlink: An implementation of the classic blink sketch using ReefwingTimer.
 - batteryCheck: An example of a scheduled task, in this case checking the battery voltage every second.
 - serialTimeout: Stops waiting for a serial connection after 5 seconds.
 - userTimeout: Stops waiting for user input after a set period.
@@ -167,9 +167,9 @@ void setup() {
   while (!Serial || timeout.notExpired());
 }
 ```
-You can use a similar approach to wait for user input. Full versions of both sketches are provided in the examples folder of the NexgenTimer library.
+You can use a similar approach to wait for user input. Full versions of both sketches are provided in the examples folder of the ReefwingTimer library.
 ```c++
-#include <NexgenTimer.h>
+#include <ReefwingTimer.h>
 
 void setup() {
   Serial.begin(115200);
@@ -211,7 +211,7 @@ Our sketch contains two integer variables, ```previousState``` and ```currentSta
 
 The objective of the sketch is to toggle the built in LED, every time the momentary switch is pressed. The ```debounceTimer``` sketch is shown below.
 ```c++
-#include <NexgenTimer.h>
+#include <ReefwingTimer.h>
 
 const int SWITCH_PIN = 2;
 const unsigned long DEBOUNCE_DELAY = 50;
@@ -244,39 +244,39 @@ void loop() {
 }
 ```
 ## 5. Multiple Timers
-You can't get true multitasking without using multiple processors or threads. However, we can get the next best thing with multiple timers. Say there is five tasks that we need to perform periodically, we can assign each of these tasks to its own NexgenTimer. The task can then be performed in the expired timer handler.
+You can't get true multitasking without using multiple processors or threads. However, we can get the next best thing with multiple timers. Say there is five tasks that we need to perform periodically, we can assign each of these tasks to its own ReefwingTimer. The task can then be performed in the expired timer handler.
 ```c++
-#include <NexgenTimer.h>
+#include <ReefwingTimer.h>
 
-void timer1Handler(NexgenTimer &nt) {
+void timer1Handler(ReefwingTimer &nt) {
   Serial.print("Timer 1 Task - remaining calls: ");
   Serial.println(nt.getRemainingRepeats());
 }
 
-void timer2Handler(NexgenTimer &nt) {
+void timer2Handler(ReefwingTimer &nt) {
   Serial.println("Timer 2 Task");
 }
 
-void timer3Handler(NexgenTimer &nt) {
+void timer3Handler(ReefwingTimer &nt) {
   Serial.println("Timer 3 Task");
 }
 
-void timer4Handler(NexgenTimer &nt) {
+void timer4Handler(ReefwingTimer &nt) {
   Serial.println("Timer 4 Task");
 }
 
-void timer5Handler(NexgenTimer &nt) {
+void timer5Handler(ReefwingTimer &nt) {
   Serial.print("Timer 5 Task - remaining calls: ");
   Serial.println(nt.getRemainingRepeats());
 }
 
-NexgenTimer timer1(1000, timer1Handler), timer2(2000, timer2Handler), timer3(2500, timer3Handler), 
+ReefwingTimer timer1(1000, timer1Handler), timer2(2000, timer2Handler), timer3(2500, timer3Handler), 
             timer4(6200, timer4Handler), timer5(8700, timer5Handler);
 
 void setup() {
   //  Start Serial
   Serial.begin(115200);
-  Serial.println("Nexgen Multiple Timer Example");
+  Serial.println("Reefwing Multiple Timer Example");
 
   //  Timer Configuration
   timer1.setRepeats(10);
@@ -301,4 +301,4 @@ void loop() {
 ```
 The timestamp on the serial monitor shows that the timers are not millisecond accurate but they are good enough for most tasks.
 
-The ```NexgenTimer Library``` can be downloaded using the Arduino Library Manager.
+The ```ReefwingTimer Library``` can be downloaded using the Arduino Library Manager.
