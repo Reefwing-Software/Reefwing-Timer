@@ -5,11 +5,12 @@
   @copyright  Please see the accompanying LICENSE file.
 
   Code:        David Such
-  Version:     2.0
+  Version:     2.0.1
   Date:        13/12/22
 
-  1.0 Original Release          06/02/22
-  2.0 Rebranding                13/12/22
+  1.0   Original Release          06/02/22
+  2.0   Rebranding                13/12/22
+  2.0.1 Change Version Schema     14/12/22
 
   Credits - based on an amalgamation of the MillisTimer code by 
             Brett Hagman <bhagman@wiring.org.co> and elapsedMillis 
