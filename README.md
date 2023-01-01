@@ -1,3 +1,5 @@
+![version](https://img.shields.io/github/v/tag/Reefwing-Software/Reefwing-Timer) ![license](https://img.shields.io/badge/license-MIT-green) ![release](https://img.shields.io/github/release-date/Reefwing-Software/Reefwing-Timer?color="red") ![open source](https://badgen.net/badge/open/source/blue?icon=github)
+
 # Reefwing Timer Library
  A non blocking Scheduler based on millis().
 
@@ -64,7 +66,7 @@ batteryVoltage = (adcValue / 1024.0) * 5.0 * dividerRatio;
 R1 and R2 are the values of the resistors used in the voltage divider. It is important to cast the resistor values to float or the Arduino will do integer division and you will get the wrong value for the dividerRatio. We add 0.5 to the value read from the ADC (Analog to Digital Converter) because the hardware rounds down when it is measuring the voltage.
 
 ## Scheduling a Reading
-The loop{} frequency in an Arduino sketch will depend on the processor speed and code content. Typically though it will be executing thousands or even millions of times per second. Execution cycles are precious and you don't want to waste them on non-critical tasks. How often do we need to sample our battery voltage? Well it depends on the discharge rate (C). Here is the specification of a typical LiPo battery.
+The `loop()` frequency in an Arduino sketch will depend on the processor speed and code content. Typically though it will be executing thousands or even millions of times per second. Execution cycles are precious and you don't want to waste them on non-critical tasks. How often do we need to sample our battery voltage? Well it depends on the discharge rate (C). Here is the specification of a typical LiPo battery.
 ```
 Minimum Capacity: 2200mAh
 Configuration: 3S1P / 11.1v / 3Cell
@@ -147,11 +149,11 @@ Our sketch sets up a timer which fires every second for ever. When the timer exp
 The second example is called ```batteryCheck()```. This works the same as the non blocking blink sketch. We create a timer which expires every second and then in the expired timer handle function we read the battery voltage. As with any interrupt handler you don't want to do too much work in the handler. In our flight controller, where we use this timer, we set a flag if the battery is too low and the main loop then takes appropriate action (i.e., sends a warning to the remote control).
 
 ## 3. Serial and User Timeouts
-Another common application is where your sketch is waiting for something to happen but doesn't want to wait forever. An example of this is waiting for a serial connection. On boards with a native USB connection like the Nano 33 IoT, Nano 33 BLE and Portenta H7, it is possible to miss seeing serial messages on the terminal if you don't wait for a connection. To that end you will often see the following code in ```setup{}```:
+Another common application is where your sketch is waiting for something to happen but doesn't want to wait forever. An example of this is waiting for a serial connection. On boards with a native USB connection like the Nano 33 IoT, Nano 33 BLE and Portenta H7, it is possible to miss seeing serial messages on the terminal if you don't wait for a connection. To that end you will often see the following code in ```setup()```:
 ```c++
 while (!Serial);
 ```
-For older Arduino boards that use a USB to UART serial converter, like the ATMega8U2 or FT232, ```if (Serial)``` will always return true. When you connect to the serial port of a board like the UNO or Mega 2560 the whole board usually resets, so opening the serial port allows you to see the first bits of serial data. On the Leonardo, Nano 33, etc., it doesn't reset when you connect to serial, so any serial output during the ```setup{}``` function could be missed. Adding this line makes the board pause until you open the serial port, so you get to see that initial bit of data.
+For older Arduino boards that use a USB to UART serial converter, like the ATMega8U2 or FT232, ```if (Serial)``` will always return true. When you connect to the serial port of a board like the UNO or Mega 2560 the whole board usually resets, so opening the serial port allows you to see the first bits of serial data. On the Leonardo, Nano 33, etc., it doesn't reset when you connect to serial, so any serial output during the ```setup()``` function could be missed. Adding this line makes the board pause until you open the serial port, so you get to see that initial bit of data.
 
 The problem is if you don't make a serial connection then your sketch will hang. Often the serial connection is only required for debugging so this is not what you want. To overcome this, we can use something like the serial timeout sketch. 
 
